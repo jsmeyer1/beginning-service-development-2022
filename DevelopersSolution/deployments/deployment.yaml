@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: developers-api
+  namespace: developers
+spec:
+  selector:
+    matchLabels:
+      app: developers-api
+  template:
+    metadata:
+      labels:
+        app: developers-api
+    
+    spec:
+      containers:
+      - name: developers-api
+        env:
+          - name: ConnectionStrings__outages-api
+            value: "http://outagetracker-api-service"
+          - name: ConnectionStrings__mongo
+            value: "mongodb://root:TokyoJoe138!@mongo-mongodb:27017"
+
+        image: developers-api:v0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
